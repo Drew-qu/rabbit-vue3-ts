@@ -1,10 +1,9 @@
-<script lang="ts" setup name="Layout"></script>
+<script lang="ts" setup name="Layout">
+import AppTopnav from './component/app-topnav.vue';
+
+</script>
 <template>
-  <div>layout组件</div>
-  <div>顶栏</div>
-  <div>导航</div>
-  <div>二级路由</div>
-  <div>下栏</div>
+  <AppTopnav />
 </template>
 
 <style lang="less" scoped></style>
