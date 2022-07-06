@@ -8,13 +8,22 @@ categoryStore.getAllCategory()
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li v-for="item in categoryStore.list" :key="item.id">
-      <RouterLink :to="item.id ? `/category/${item.id}` : '/'" > {{item.name}} </RouterLink>
+    <li
+    @mouseenter="categoryStore.show(item.id)" 
+    @mouseleave="categoryStore.hide(item.id)"
+    v-for="item in categoryStore.list" 
+    :key="item.id" >
+      <RouterLink 
+      @click="categoryStore.hide(item.id)"
+      :to="item.id ? `/category/${item.id}` : '/'" 
+      > {{item.name}} </RouterLink>
       <!-- 盒子 -->
-      <div class="layer" v-if="item.children">
+      <div class="layer" v-if="item.children" :class=" { open: item.open } ">
         <ul>
-          <li v-for="sub in item.children" :key="sub.id">
-            <RouterLink :to="`/category/sub/${sub.id}`">
+          <li 
+          v-for="sub in item.children" 
+          :key="sub.id">
+            <RouterLink @click="categoryStore.hide(item.id)" :to="`/category/sub/${sub.id}`">
               <img
                 :src="sub.picture"
                 alt=""
@@ -55,15 +64,19 @@ categoryStore.getAllCategory()
         color: @xtxColor;
         border-bottom: 1px solid @xtxColor;
       }
-      > .layer {
-        height: 132px;
-        opacity: 1;
-      }
+      // > .layer {
+      //   height: 132px;
+      //   opacity: 1;
+      // }
     }
   }
 }
 // 新增样式
 .layer {
+  &.open {
+    height: 132px;
+    opacity: 1;
+  }
   width: 1240px;
   background-color: #fff;
   position: absolute;

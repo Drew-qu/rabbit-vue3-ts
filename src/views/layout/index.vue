@@ -2,11 +2,13 @@
 import AppTopnav from './component/app-topnav.vue';
 import AppHeader from './component/app-header.vue';
 import AppFooter from './component/app-footer.vue';
+import AppHeaderSticky from './component/app-header-sticky.vue';
 
 </script>
 <template>
   <AppTopnav />
   <AppHeader />
+  <AppHeaderSticky></AppHeaderSticky>
   <main class="app-body">
     <!-- 路由出口 -->
     <RouterView></RouterView>
