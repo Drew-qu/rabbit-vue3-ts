@@ -4,6 +4,7 @@ export interface CategoryItem {
   picture: string 
   open: boolean
   children: CategoryItem[]
+  goods: GoodItem[]
 }
 
 export interface ApiRes<T> {
@@ -11,3 +12,15 @@ export interface ApiRes<T> {
     msg: string
     result: T[]
 }
+
+
+export interface GoodItem {
+  id: string;
+  name: string;
+  desc: string;
+  price: string;
+  picture: string;
+  discount?: any;
+  orderNum?: number;
+}
+

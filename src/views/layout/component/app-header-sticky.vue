@@ -1,18 +1,19 @@
 <script lang="ts" setup name="AppHeaderSticky">
-import { on } from 'events';
 import { onBeforeMount, onMounted, ref } from 'vue';
 import AppHeaderNav from './app-header-nav.vue'
-const y = ref(0)
-const scrollTop = () => {
-  y.value = document.documentElement.scrollTop
-}
-onMounted(()=> {
-  window.addEventListener('scroll', scrollTop)
-})
+import { useScroll } from '@vueuse/core'
+const { y } = useScroll(window)
+// const y = ref(0)
+// const scrollTop = () => {
+//   y.value = document.documentElement.scrollTop || document.body.scrollTop
+// }
+// onMounted(()=> {
+//   window.addEventListener('scroll', scrollTop)
+// })
 
-onBeforeMount(() => {
-  window.removeEventListener('scroll', scrollTop)
-})
+// onBeforeMount(() => {
+//   window.removeEventListener('scroll', scrollTop)
+// })
 </script>
 
 <template>
