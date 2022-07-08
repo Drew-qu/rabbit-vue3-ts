@@ -2,6 +2,8 @@
 import HomeBanner from './components/home-banner.vue'
 import HomeCategory from './components/home-category.vue'
 import HomePanel from './components/home-panel.vue';
+import HomeNew from './components/home-new.vue';
+import HomeHot from './components/home-hot.vue';
 </script>
 
 <template>
@@ -18,32 +20,15 @@ import HomePanel from './components/home-panel.vue';
 
 
     <!-- 新鲜好物 -->
-    <HomePanel title="新鲜好物" subTitle="新鲜出炉 品质靠谱">
-      <template #right>
-          <XtxMore to="/"></XtxMore>
-      </template>
-        <div>图片</div>
-        <div>图片</div>
-        <div>图片</div>
-        <div>图片</div>
-        <div>图片</div>
-        <div>图片</div>
-        <div>图片</div>
-    </HomePanel>
+    <HomeNew />
 
     <!-- 人气推荐 -->
-    <HomePanel title="人气推荐" subTitle="人气爆款 不容错过">
-        <div>图片</div>
-        <div>图片</div>
-        <div>图片</div>
-        <div>图片</div>
-        <div>图片</div>
-        <div>图片</div>
-        <div>图片</div>
-    </HomePanel>
+    <HomeHot />
   </div>
 </template>
 
 
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+
+</style>
