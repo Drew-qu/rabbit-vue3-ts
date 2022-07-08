@@ -1,48 +1,66 @@
 <script lang="ts" setup name="XtxCarousel">
+// 传值传统写法
 // defineProps({
 //   slides: {
 //     type: Array,
 //     required: true
+//   },
+//   autoplay: {
+//     type: Boolean,
+//     default: true
+//   },
+//   duration: {
+//     type: Number,
+//     default: 3000
 //   }
 // })
 import { BannerItem } from '@/types/data'
 import { onMounted, onUnmounted, ref } from 'vue';
 
-const props = defineProps<{
+// 默认值赋值属于实验性语法, 需要配置 reactivityTransform: true 在 vite 配置文件中 https://vuejs.org/guide/extras/reactivity-transform.html
+const {slides, autoplay = true, duration = 3000} = defineProps<{
   slides: BannerItem[]
+  autoplay?: boolean
+  duration: number
 }>()
 
 const active = ref(0)
+// 轮播图, 上一张按钮
 const prev = () => {
   active.value--
   if(active.value < 0) {
-    active.value = props.slides.length -1
+    active.value = slides.length -1
   }
 }
 
+// 轮播图, 下一张按钮
 const next = () => {
   active.value++
-  if(active.value >= props.slides.length) {
+  if(active.value >= slides.length) {
     active.value = 0
   }
 }
 
 let timerId = -1
 
+// 开始播放
 const start = () => {
+  if(!autoplay) return
     timerId = window.setInterval(() => {
     next()
-  }, 3000)
+  }, duration)
 }
 
+// 停止播放
 const stop = () => {
   clearInterval(timerId)
 }
-
+// 挂载后, 开始播放
 onMounted(() => {
   start()
 })
 
+// 销毁后, 停止播放
 onUnmounted(() => {
   stop()
 })
@@ -67,7 +85,7 @@ onUnmounted(() => {
       ><i class="iconfont icon-angle-right"></i
     ></a>
     <div class="carousel-indicator">
-      <span @mouseenter="active = index" v-for="(item, index) in props.slides" :key="item.id" :class="{active: active === index}"></span>
+      <span @mouseenter="active = index" v-for="(item, index) in slides" :key="item.id" :class="{active: active === index}"></span>
     </div>
   </div>
 </template>
