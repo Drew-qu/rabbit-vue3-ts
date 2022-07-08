@@ -25,7 +25,7 @@ export interface GoodItem {
 }
 
 
-export interface BannerList {
+export interface BannerItem {
   id: string;
   imgUrl: string;
   hrefUrl: string;

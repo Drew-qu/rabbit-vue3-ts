@@ -1,47 +1,73 @@
 <script lang="ts" setup name="XtxCarousel">
-defineProps()
+// defineProps({
+//   slides: {
+//     type: Array,
+//     required: true
+//   }
+// })
+import { BannerItem } from '@/types/data'
+import { onMounted, onUnmounted, ref } from 'vue';
+
+const props = defineProps<{
+  slides: BannerItem[]
+}>()
+
+const active = ref(0)
+const prev = () => {
+  active.value--
+  if(active.value < 0) {
+    active.value = props.slides.length -1
+  }
+}
+
+const next = () => {
+  active.value++
+  if(active.value >= props.slides.length) {
+    active.value = 0
+  }
+}
+
+let timerId = -1
+
+const start = () => {
+    timerId = window.setInterval(() => {
+    next()
+  }, 3000)
+}
+
+const stop = () => {
+  clearInterval(timerId)
+}
+
+onMounted(() => {
+  start()
+})
+
+onUnmounted(() => {
+  stop()
+})
 </script>
 
 <template>
-  <div class="xtx-carousel">
+  <div class="xtx-carousel" @mouseenter="stop" @mouseleave="start">
     <ul class="carousel-body">
-      <li class="carousel-item fade">
-        <RouterLink to="/">
+      <li class="carousel-item" v-for=" (item, index) in slides" :key="item.id" :class="{fade: active === index}">
+        <RouterLink :to="item.hrefUrl">
           <img
-            src="http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/1ba86bcc-ae71-42a3-bc3e-37b662f7f07e.jpg"
-            alt=""
-          />
-        </RouterLink>
-      </li>
-      <li class="carousel-item">
-        <RouterLink to="/">
-          <img
-            src="http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/1ba86bcc-ae71-42a3-bc3e-37b662f7f07e.jpg"
-            alt=""
-          />
-        </RouterLink>
-      </li>
-      <li class="carousel-item">
-        <RouterLink to="/">
-          <img
-            src="http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/1ba86bcc-ae71-42a3-bc3e-37b662f7f07e.jpg"
+            :src="item.imgUrl"
             alt=""
           />
         </RouterLink>
       </li>
     </ul>
-    <a href="javascript:;" class="carousel-btn prev"
+    <a href="javascript:;" class="carousel-btn prev" @click="prev"
       ><i class="iconfont icon-angle-left"></i
     ></a>
-    <a href="javascript:;" class="carousel-btn next"
+    <a href="javascript:;" class="carousel-btn next" @click="next"
       ><i class="iconfont icon-angle-right"></i
     ></a>
     <div class="carousel-indicator">
-      <span class="active"></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
+      <span @mouseenter="active = index" v-for="(item, index) in props.slides" :key="item.id" :class="{active: active === index}"></span>
     </div>
   </div>
 </template>
