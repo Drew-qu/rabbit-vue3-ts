@@ -10,7 +10,8 @@ import HomeCategory from './components/home-category.vue'
         <!-- 左侧分类 -->
         <HomeCategory />
         <!-- banner轮播图 -->
-        <HomeBanner />
+        
+        <HomeBanner></HomeBanner>
       </div>
     </div>
   </div>

@@ -24,3 +24,11 @@ export interface GoodItem {
   orderNum?: number;
 }
 
+
+export interface BannerList {
+  id: string;
+  imgUrl: string;
+  hrefUrl: string;
+  type: string;
+}
+
