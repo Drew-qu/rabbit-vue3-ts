@@ -17,7 +17,7 @@ export default defineStore('home', {
     },
     async getNewList() {
       const res = await request.get<ApiRes<NewItem>>('/home/new')
-      console.log(res);
+      // console.log(res);
       this.newList = res.data.result
     },
     async getHotList() {

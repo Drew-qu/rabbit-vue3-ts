@@ -4,6 +4,10 @@ import AppHeader from './component/app-header.vue';
 import AppFooter from './component/app-footer.vue';
 import AppHeaderSticky from './component/app-header-sticky.vue';
 
+import useStore from '@/store';
+const { categoryStore } = useStore()
+categoryStore.getAllCategory()
+
 </script>
 <template>
   <AppTopnav />

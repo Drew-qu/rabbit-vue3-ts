@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HomePanel title="新鲜好物" subTitle="新鲜出炉 品质靠谱">
+    <HomePanel ref="target" title="新鲜好物" subTitle="新鲜出炉 品质靠谱">
       <template #right>
           <XtxMore to="/"></XtxMore>
       </template>
@@ -23,9 +23,23 @@
 
 <script setup lang="ts">
 import useStore from '@/store';
+import { ref } from 'vue';
 import HomePanel from './home-panel.vue';
+import { useLazyData } from '@/utils/hooks'
+
 const { home } = useStore()
-home.getNewList()
+
+
+// const target = ref(null)
+// 原装封装
+// useLazyData(target, () => home.getNewList())
+
+// 借助引用数据类型的特性, 实现封装
+// const target = useLazyData(() => home.getNewList())
+
+// 极致精简 => 将 api 函数直接作为回调传入, 自动执行
+const target = useLazyData(home.getNewList)
+
 </script>
 
 <style scoped lang="less">

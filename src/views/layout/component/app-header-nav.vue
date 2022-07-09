@@ -1,7 +1,6 @@
 <script lang="ts" setup name="AppHeaderNav">
 import useStore from '@/store';
 const { categoryStore } = useStore()
-categoryStore.getAllCategory()
 
 </script>
 

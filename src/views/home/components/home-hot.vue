@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HomePanel title="人气推荐" subTitle="人气爆款 不容错过">
+    <HomePanel ref="target" title="人气推荐" subTitle="人气爆款 不容错过">
         <!-- 面板内容 -->
         <ul class="goods-list">
           <li v-for="item in home.hotList" :key="item.id">
@@ -20,9 +20,22 @@
 
 <script setup lang="ts">
 import useStore from '@/store';
+// import { ref } from 'vue';
 import HomePanel from './home-panel.vue';
+// import { useIntersectionObserver } from '@vueuse/core'
+import { useLazyData } from '@/utils/hooks';
 const { home } = useStore()
-home.getHotList()
+
+
+// const target = ref(null)
+// const { stop }= useIntersectionObserver(target, ([{ isIntersecting }]) => {
+//   if( isIntersecting ) {
+//     home.getHotList()
+//     stop()
+//   }
+// })
+
+const target = useLazyData(home.getHotList)
 </script>
 
 <style scoped lang="less">

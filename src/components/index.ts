@@ -3,6 +3,7 @@ import XtxSkeleton from './skeleton/index.vue'
 import XtxCarousel from './carousel/index.vue'
 import XtxMore from './more/index.vue'
 import { useIntersectionObserver } from "@vueuse/core";
+import defaultImg from '@/assets/images/200.png'
 
 export default {
   install(app: App) {
@@ -21,6 +22,10 @@ export default {
             el.src = binding.value
           }
         })
+        el.onerror = function() {
+          el.src = defaultImg
+        }
+        
       }
     })
   }
