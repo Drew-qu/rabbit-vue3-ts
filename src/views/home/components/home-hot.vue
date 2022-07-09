@@ -1,8 +1,9 @@
 <template>
   <div>
     <HomePanel ref="target" title="人气推荐" subTitle="人气爆款 不容错过">
+      <Transition name="fade">
         <!-- 面板内容 -->
-        <ul class="goods-list">
+        <ul class="goods-list" v-if="home.hotList.length">
           <li v-for="item in home.hotList" :key="item.id">
             <RouterLink to="/">
               <img
@@ -14,6 +15,8 @@
             </RouterLink>
           </li>
         </ul>
+        <HomeSkeleton :count="4" v-else />
+      </Transition>
     </HomePanel>
   </div>
 </template>
@@ -24,6 +27,7 @@ import useStore from '@/store';
 import HomePanel from './home-panel.vue';
 // import { useIntersectionObserver } from '@vueuse/core'
 import { useLazyData } from '@/utils/hooks';
+import HomeSkeleton from './home-skeleton.vue';
 const { home } = useStore()
 
 

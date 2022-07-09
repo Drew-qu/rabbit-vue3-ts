@@ -4,12 +4,16 @@ import XtxCarousel from './carousel/index.vue'
 import XtxMore from './more/index.vue'
 import { useIntersectionObserver } from "@vueuse/core";
 import defaultImg from '@/assets/images/200.png'
+import XtxBread from './bread/index.vue'
+import XtxBreadItem from './bread/item.vue'
 
 export default {
   install(app: App) {
     app.component(XtxSkeleton.name, XtxSkeleton)
     app.component(XtxCarousel.name, XtxCarousel)
     app.component(XtxMore.name, XtxMore)
+    app.component(XtxBread.name, XtxBread)
+    app.component(XtxBreadItem.name, XtxBreadItem)
     // 全局注册指令
     // 参数1: 指令名
     // 参数2: 配置项

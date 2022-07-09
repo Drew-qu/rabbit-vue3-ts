@@ -4,8 +4,9 @@
       <template #right>
           <XtxMore to="/"></XtxMore>
       </template>
+      <Transition name="fade">
         <!-- 面板内容 -->
-        <ul class="goods-list">
+        <ul class="goods-list" v-if="home.newList.length">
           <li v-for="item in home.newList" :key="item.id">
             <RouterLink to="/">
               <img
@@ -17,15 +18,18 @@
             </RouterLink>
           </li>
         </ul>
+
+        <HomeSkeleton :count="4" v-else />
+      </Transition>
     </HomePanel>
   </div>
 </template>
 
 <script setup lang="ts">
 import useStore from '@/store';
-import { ref } from 'vue';
 import HomePanel from './home-panel.vue';
 import { useLazyData } from '@/utils/hooks'
+import HomeSkeleton from './home-skeleton.vue';
 
 const { home } = useStore()
 

@@ -8,6 +8,9 @@ export function useLazyData(callback: () => void) {
       callback()
       stop()
     }
+  },
+  {
+    threshold: 0
   })
   return target
 }

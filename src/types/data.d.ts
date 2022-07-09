@@ -10,7 +10,7 @@ export interface CategoryItem {
 export interface ApiRes<T> {
     code: string
     msg: string
-    result: T[]
+    result: T
 }
 
 
@@ -48,4 +48,67 @@ export interface HotItem {
   title: string;
   alt: string;
 }
+
+export interface brandItem {
+  id: string;
+  name: string;
+  nameEn: string;
+  logo: string;
+  picture: string;
+  type?: any;
+  desc: string;
+  place: string;
+}
+
+
+export interface goodsList {
+  id: string;
+  name: string;
+  picture: string;
+  saleInfo: string;
+  children: Children[];
+  goods: GoodsItem[];
+}
+
+export interface GoodsItem {
+  id: string;
+  name: string;
+  desc: string;
+  price: string;
+  picture: string;
+  discount?: any;
+  orderNum: number;
+}
+
+export interface Children {
+  id: string;
+  name: string;
+  layer: number;
+  parent?: any;
+}
+
+export interface specialItem {
+  creator: string;
+  isDelete: number;
+  createTime: string;
+  updateTime: string;
+  id: string;
+  classificationId: string;
+  title: string;
+  summary: string;
+  lowestPrice: number;
+  cover: string;
+  detailsUrl: string;
+  collectNum: number;
+  viewNum: number;
+  replyNum: number;
+}
+
+export interface TopCategory {
+  id: string;
+  name: string;
+  picture: string;
+  children: CategoryItem[];
+}
+
 
