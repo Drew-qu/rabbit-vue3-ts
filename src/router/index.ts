@@ -28,6 +28,10 @@ const router = createRouter({
         {
           path: 'playground',
           component: () => import('@/views/playground/index.vue')
+        },
+        {
+          path: '/goods/:id',
+          component: () => import('@/views/goods/index.vue')
         }
       ]
     },
