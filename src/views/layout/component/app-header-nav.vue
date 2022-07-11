@@ -8,7 +8,7 @@ const { categoryStore } = useStore()
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
     <li
-    @mouseenter="categoryStore.show(item.id)" 
+    @mousemove="categoryStore.show(item.id)" 
     @mouseleave="categoryStore.hide(item.id)"
     v-for="item in categoryStore.list" 
     :key="item.id" >

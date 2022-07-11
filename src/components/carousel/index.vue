@@ -21,7 +21,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
 const {slides, autoplay = true, duration = 3000} = defineProps<{
   slides: BannerItem[]
   autoplay?: boolean
-  duration: number
+  duration?: number
 }>()
 
 const active = ref(0)
