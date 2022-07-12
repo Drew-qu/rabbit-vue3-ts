@@ -50,7 +50,7 @@ const start = () => {
     next()
   }, duration)
 }
-
+` `
 // 停止播放
 const stop = () => {
   clearInterval(timerId)

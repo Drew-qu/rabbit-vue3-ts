@@ -6,6 +6,7 @@ import { useIntersectionObserver } from "@vueuse/core";
 import defaultImg from '@/assets/images/200.png'
 import XtxBread from './bread/index.vue'
 import XtxBreadItem from './bread/item.vue'
+import XtxCity from './city/index.vue'
 
 export default {
   install(app: App) {
@@ -14,6 +15,7 @@ export default {
     app.component(XtxMore.name, XtxMore)
     app.component(XtxBread.name, XtxBread)
     app.component(XtxBreadItem.name, XtxBreadItem)
+    app.component(XtxCity.name, XtxCity)
     // 全局注册指令
     // 参数1: 指令名
     // 参数2: 配置项

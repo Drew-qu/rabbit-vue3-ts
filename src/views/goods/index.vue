@@ -2,7 +2,10 @@
 import useStore from '@/store';
 import { watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import GoodsImage from './goods-image.vue';
+import GoodsImage from './components/goods-image.vue';
+import GoodsSales from './components/goods-sales.vue';
+import GoodsName from './components/goods-name.vue';
+import GoodsSku from './components/goods-sku.vue';
 const { goods } = useStore()
 const route = useRoute()
 watchEffect(() => {
@@ -39,11 +42,16 @@ watchEffect(() => {
         </transition>
       </div>
       <!-- 商品信息 -->
-      <div class="goods-info">
+      <div v-if="goods.info.mainPictures" class="goods-info">
         <div class="media">
-          <GoodsImage v-if="goods.info.mainPictures" :images="goods.info.mainPictures"></GoodsImage>
+          <GoodsImage :images="goods.info.mainPictures"></GoodsImage>
+          <GoodsSales :goods="goods.info" />
         </div>
-        <div class="spec"></div>
+        <div class="spec">
+          <GoodsName :goods="goods.info" />
+          <!-- 规格组件 -->
+          <GoodsSku :goods="goods.info" />
+        </div>
       </div>
       <!-- 商品详情 -->
       <div class="goods-footer">

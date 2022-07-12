@@ -165,4 +165,30 @@ export type GoodsInfo = {
     id: string
     name: string
   }[]
+  specs: Spec[]
+  skus: Sku[]
+}
+
+export interface Spec {
+  name: string
+  values: SpecValues[]
+}
+
+export interface SpecValues {
+  desc: string
+  name: string
+  picture: string
+  selected: boolean
+}
+
+export interface Sku {
+  id: string
+  inventory: number
+  oldPrice: string
+  price: string
+  skuCode: string
+  specs: {
+    name: string
+    valueName: string
+  }[]
 }
