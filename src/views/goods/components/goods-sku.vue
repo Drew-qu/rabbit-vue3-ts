@@ -102,7 +102,7 @@ const getSelectedSpec = () => {
 const initSelectedSpec = () => {
   if(!props.skuID) return
   const sku = props.goods.skus.find( item => item.id === props.skuID)
-  console.log(sku);
+  // console.log(sku);
   if(!sku) return
   const selectedArr = sku.specs.map( item => item.valueName)
   props.goods.specs.forEach( item => {
