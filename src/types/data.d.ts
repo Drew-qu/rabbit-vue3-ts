@@ -179,6 +179,7 @@ export interface SpecValues {
   name: string
   picture: string
   selected: boolean
+  disabled: boolean
 }
 
 export interface Sku {

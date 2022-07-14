@@ -1,23 +1,33 @@
 <script setup lang="ts" name="GoodsSku">
 import {GoodsInfo, Spec, SpecValues} from '@/types/data'
 import bwPowerSet from '@/utils/bwPowerSet';
+import subVue from '@/views/category/sub.vue';
 const props = defineProps<{
   goods: GoodsInfo
+  skuID?: string
 }>()
 
 const changeSelected = (item: Spec, sub: SpecValues) => {
-  if(sub.selected) {
-    // 如果被选中了, 取消选中
-    sub.selected = false
-  } else {
+  // if(sub.selected) {
+  //   // 如果被选中了, 取消选中
+  //   sub.selected = false
+  // } else {
 
-    // 干掉所有, 留下自己
-    item.values.forEach(i => i.selected = false)
+  //   // 干掉所有, 留下自己
+  //   item.values.filter(v => v.name !==sub.name ).forEach(i => i.selected = false)
   
-    // 让 sub 选中
-    sub.selected = true
-  }
+  //   // 让 sub 选中
+  //   sub.selected = true
+  // }
+  // 判断如果选中了，就不要选中
+  if(sub.disabled) return
+  item.values.filter( v => v.name !== sub.name ).forEach( i => i.selected = false )
+  sub.selected = !sub.selected
+  // 更新组合规格的禁用状态
+  updateDisabledStatus()
 }
+
+const SEPARATOR = '☆'
 
 // 测试 powerSet 算法
 // const result = bwPowerSet([1, 2])
@@ -39,7 +49,7 @@ function getPathMap() {
     // console.log(result);
     // 4. 往路径字典中, 添加属性
     result.forEach( arrItem => {
-      const key = arrItem.join('☆')
+      const key = arrItem.join(SEPARATOR)
       // 4.1 如果对象中没有这个属性, 就创建一个数组, 添加 id
       // xx in 对象: 表示判断 'xx' 是否是对象的属性, 有就返回 true, 没有就是 false
       if(key in pathMap) {
@@ -54,9 +64,63 @@ function getPathMap() {
   return pathMap
 }
 
-const pathMap = getPathMap()
-console.log(pathMap);
+// 修改禁用状态, 页面加载时就对所有元素进行修改
+const updateDisabledStatus = () => {
+  
+  // 循环所有的 spec(规格) 去路径字典里面去找, 是否存在
+  // 如果存在就不禁用, 反之就禁用
+  props.goods.specs.forEach((item, index) => {
+    // 去对象里面找是否有这个属性, key in obj
+    // 如果存在就不禁用，反之就禁用
+    item.values.forEach( v => {
+      // if( v.name in pathMap ) {
+      //   v.disabled = false
+      // } else {
+      //   v.disabled = true
+      // }
+      const selectedArr = getSelectedSpec()
+      selectedArr[index] = v.name
+      const key = selectedArr.filter( v => v).join(SEPARATOR)
+      v.disabled = !(key in pathMap)
+    })
+  })
+}
 
+// 获取被选中的规格, 必须为 ['','',''] 格式
+const getSelectedSpec = () => {
+  const arr:string[] = []
+  // 
+  props.goods.specs.forEach( i => {
+    const result = i.values.find( item => item.selected)
+    // console.log(result);
+    arr.push(result?.name || '')
+    
+  })
+  return arr
+}
+
+const initSelectedSpec = () => {
+  if(!props.skuID) return
+  const sku = props.goods.skus.find( item => item.id === props.skuID)
+  console.log(sku);
+  if(!sku) return
+  const selectedArr = sku.specs.map( item => item.valueName)
+  props.goods.specs.forEach( item => {
+    item.values.forEach( sub => {
+      sub.selected = selectedArr.includes(sub.name)
+      // if(selectedArr.includes(sub.name)) {
+      //   sub.selected = true
+      // }
+    })
+  })
+  
+}
+
+const pathMap = getPathMap()
+// console.log(pathMap);
+initSelectedSpec()
+
+updateDisabledStatus()
 
 
 
@@ -70,7 +134,7 @@ console.log(pathMap);
         <template v-for="sub in item.values" :key="sub.name">
           <img
             v-if="sub.picture"
-            :class="{selected: sub.selected}"
+            :class="{selected: sub.selected, disabled: sub.disabled}"
             :src="sub.picture"
             alt=""
             :title="sub.name"
@@ -79,7 +143,7 @@ console.log(pathMap);
           <span 
           @click="changeSelected(item, sub)" 
           v-else 
-          :class="{selected: sub.selected}">{{ sub.name }}</span>
+          :class="{selected: sub.selected, disabled: sub.disabled}">{{ sub.name }}</span>
         </template>
       </dd>
     </dl>
