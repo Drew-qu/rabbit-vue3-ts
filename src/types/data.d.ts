@@ -167,6 +167,7 @@ export type GoodsInfo = {
   }[]
   specs: Spec[]
   skus: Sku[]
+  details: GoodsDetail
 }
 
 export interface Spec {
@@ -191,5 +192,13 @@ export interface Sku {
   specs: {
     name: string
     valueName: string
+  }[]
+}
+
+export type GoodsDetail = {
+  pictures: string[]
+  properties: {
+    name: string
+    value: string
   }[]
 }

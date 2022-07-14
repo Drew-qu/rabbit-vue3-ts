@@ -7,6 +7,10 @@ const props = defineProps<{
   skuID?: string
 }>()
 
+const emit = defineEmits<{
+  (e: 'changeSku', skuId: string): void
+}>()
+
 const changeSelected = (item: Spec, sub: SpecValues) => {
   // if(sub.selected) {
   //   // 如果被选中了, 取消选中
@@ -25,6 +29,20 @@ const changeSelected = (item: Spec, sub: SpecValues) => {
   sub.selected = !sub.selected
   // 更新组合规格的禁用状态
   updateDisabledStatus()
+  // 获取当前选中的规格
+  // 判断是否选中了所有的规格, 如果选中了就子传父将 skuId 传过去
+  const result = getSelectedSpec()
+  // console.log(result);
+  
+  // const isAll = result.every(item => item)
+  // console.log(isAll);
+  // result.filter( i => i).length === props.goods.specs.length
+  if(result.every(item => item)) {
+    const key = result.join(SEPARATOR)
+    const val = pathMap[key]
+    emit('changeSku', val[0])
+  }
+  
 }
 
 const SEPARATOR = '☆'

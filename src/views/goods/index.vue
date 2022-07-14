@@ -1,18 +1,29 @@
 <script lang="ts" setup>
 import useStore from '@/store';
-import { watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import GoodsImage from './components/goods-image.vue';
 import GoodsSales from './components/goods-sales.vue';
 import GoodsName from './components/goods-name.vue';
 import GoodsSku from './components/goods-sku.vue';
+import GoodsDetail from './components/goods-detail.vue';
+import GoodsHot from './components/goods-hot.vue';
 const { goods } = useStore()
 const route = useRoute()
+const count = ref(1)
 watchEffect(() => {
   if(route.fullPath !== '/goods/' + route.params.id) return
   goods.resetGoodsInfo()
   goods.getGoodsInfo(route.params.id as string)
 })
+
+const hChange = (skuID: string) => {
+  // 根据 skuID 找到 sku 对象
+  const sku = goods.info.skus.find( item => item.id === skuID)
+  if(!sku) return
+  goods.info.price = sku.price
+  goods.info.oldPrice = sku.oldPrice
+}
 </script>
 <template>
   <div class="xtx-goods-page">
@@ -50,17 +61,26 @@ watchEffect(() => {
         <div class="spec">
           <GoodsName :goods="goods.info" />
           <!-- 规格组件 -->
-          <GoodsSku skuID="1369155864430120962" :goods="goods.info" />
+          <GoodsSku @change-sku="hChange" skuID="1369155864430120962" :goods="goods.info" />
+          <XtxNumbox show-label :min="1" :max="10" v-model='count'/>
+          <XtxButton type="primary" style="margin-top:20px">加入购物车</XtxButton>
         </div>
       </div>
       <!-- 商品详情 -->
-      <div class="goods-footer">
+      <div class="goods-footer" v-if="goods.info.details">
         <div class="goods-article">
           <!-- 商品+评价 -->
-          <div class="goods-tabs"></div>
+          <div class="goods-tabs">
+            <!-- 商品详情 -->
+            <GoodsDetail  :goods="goods.info"/>
+          </div>
         </div>
         <!-- 24热榜+专题推荐 -->
-        <div class="goods-aside"></div>
+        <div class="goods-aside">
+            <GoodsHot :type="1" />
+            <GoodsHot :type="2" />
+            <GoodsHot :type="3" />
+        </div>
       </div>
     </div>
   </div>
@@ -70,6 +90,16 @@ watchEffect(() => {
 .goods-info {
   min-height: 600px;
   background: #fff;
+  display: flex;
+  .media {
+    width: 580px;
+    height: 600px;
+    padding: 30px 50px;
+  }
+  .spec {
+    flex: 1;
+    padding: 30px 30px 30px 0;
+  }
 }
 .goods-footer {
   display: flex;
@@ -81,29 +111,6 @@ watchEffect(() => {
   .goods-aside {
     width: 280px;
     min-height: 1000px;
-  }
-}
-.goods-tabs {
-  min-height: 600px;
-  background: #fff;
-}
-.goods-warn {
-  min-height: 600px;
-  background: #fff;
-  margin-top: 20px;
-}
-.goods-info {
-  min-height: 600px;
-  background: #fff;
-  display: flex;
-   .media {
-    width: 580px;
-    height: 600px;
-    padding: 30px 50px;
-  }
-  .spec {
-    flex: 1;
-    padding: 30px 30px 30px 0;
   }
 }
 </style>
