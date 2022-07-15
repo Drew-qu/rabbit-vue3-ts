@@ -9,6 +9,7 @@ import XtxBreadItem from './bread/item.vue'
 import XtxCity from './city/index.vue'
 import NumBox from './Numbox/index.vue'
 import XtxButton from './button/index.vue'
+import XtxCheckbox from './checkbox/index.vue'
 
 export default {
   install(app: App) {
@@ -20,6 +21,7 @@ export default {
     app.component(XtxCity.name, XtxCity)
     app.component(NumBox.name, NumBox)
     app.component(XtxButton.name, XtxButton)
+    app.component(XtxCheckbox.name, XtxCheckbox)
     // 全局注册指令
     // 参数1: 指令名
     // 参数2: 配置项
