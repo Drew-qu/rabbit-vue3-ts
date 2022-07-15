@@ -1,6 +1,6 @@
 <script lang="ts" setup name="XtxCheckbox">
 defineProps<{
-  modelValue: boolean
+  modelValue?: boolean
 }>()
 
 const emit =defineEmits<{
