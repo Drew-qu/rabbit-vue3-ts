@@ -2,7 +2,7 @@
 import LoginHeader from './components/login-header.vue';
 import LoginFooter from './components/login-footer.vue';
 import { ref } from 'vue';
-import LoginForm from './components/login-form.vue';
+import LoginForm from './components/login-form.vue'
 // 还记得
 const active = ref<'account' | 'qrcode'>('account')
 </script>

@@ -3,7 +3,7 @@ defineProps<{
   modelValue?: boolean
 }>()
 
-const emit =defineEmits<{
+const emit = defineEmits<{
   (e:'update:modelValue', val: boolean) : void
 }>()
 

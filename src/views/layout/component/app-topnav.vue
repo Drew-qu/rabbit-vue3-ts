@@ -1,8 +1,14 @@
 <script lang="ts" setup name="AppTopnav">
+import router from '@/router';
 import useStore from '@/store';
 
 const { user } = useStore()
 const { profile } = user
+
+const logout = () => {
+  user.logout()
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -11,9 +17,9 @@ const { profile } = user
       <ul>
         <template v-if="user.profile.token">
           <li>
-            <a href="javascript:;"><i class="iconfont icon-user"></i>{{ profile.nickname }}</a>
+            <a href="javascript:;"><i class="iconfont icon-user"></i>{{ profile.nickname || profile.account }}</a>
           </li>
-          <li><a href="javascript:;">退出登录</a></li>
+          <li><a href="javascript:;" @click="logout">退出登录</a></li>
         </template>
         <template v-else>
           <li><router-link to="/login">请先登录</router-link></li>

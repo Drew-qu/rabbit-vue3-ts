@@ -5,31 +5,48 @@ import useStore from '@/store'
 import router from '@/router';
 import { useField, useForm } from 'vee-validate'
 import { watch } from 'vue';
+import { useCountDown } from '@/utils/hooks'
 
 const { user } = useStore()
 
 const active = ref<'account' | 'mobile'>('account')
+
+const codeRef = ref<HTMLInputElement | null>(null)
+
+const mobileRef = ref<HTMLInputElement | null>(null)
 
 /* const form = ref({
   account: '',
   password: '',
   isAgree: false,
 }) */
-  const login = async() => {
+const login = async() => {
     // console.log('通过校验，可以发送请求')
     const res = await validate()
-    if(!res.valid) return
+    
+    // if(!res.valid) return 
+    
+    // try{
+    //   await user.login(account.value, password.value)
+    //   Message.success('登录成功')
+    //   router.push('/')
+    // } catch(e) {
+    //   Message.error('用户名或密码错误')
+    // }
 
-    try{
+    if(active.value === 'account') {
+      if(res.errors.account || res.errors.password || res.errors.isAgree) return
+      // 发请求登录
       await user.login(account.value, password.value)
-      Message.success('登录成功')
-      router.push('/')
-    } catch(e) {
-      Message.error('用户名或密码错误')
+    } else {
+      if(res.errors.mobile || res.errors.code || res.errors.isAgree) return
+      await user.mobileLogin({mobile: mobile.value, code: code.value})
     }
+    Message.success('登录成功')
+    router.push('/')
   }
 
-const { validate, resetForm } = useForm({
+const { validate, resetForm} = useForm({
   validationSchema: {
     // value 是将来使用该规则的表单元素的值
     // 1. 必填
@@ -55,11 +72,37 @@ const { validate, resetForm } = useForm({
     },
     code(value: number) {
       if(!value) return '请输入验证码'
-      if(/^\d{6}$/) return '验证码格式错误'
+      if(!/^\d{6}$/) return '验证码格式错误'
       return true
-    }
+    },
   }
 })
+
+const { time, start } = useCountDown(59)
+
+const send = async() => {
+//   if(time.value > 0) return
+// time.value = 7
+// const timeId = setInterval(() => {
+//   time.value --
+//   if(time.value <= 0) {
+//     clearInterval(timeId)
+//   }
+// }, 1000)
+
+
+
+  const res = await mobileValidate()
+  if(!res.valid) return mobileRef.value?.focus()
+  codeRef.value?.focus()
+
+  if(time.value > 0) return
+  start()
+  
+  await user.sendMobileMsg(mobile.value)
+  Message.success('获取验证码成功')
+
+}
 
 // 会返回一个对象, 一般直接进行解构
 // 将其中的 value 和 errorMessage 提取出来
@@ -67,11 +110,11 @@ const { validate, resetForm } = useForm({
 const { value: account, errorMessage: accountMessage } = useField<string>('account')
 const { value: password, errorMessage: passwordMessage } = useField<string>('password')
 const { value: isAgree, errorMessage: isAgreeMessage } = useField<boolean>('isAgree')
-const { value: mobile, errorMessage: mobileMessage } = useField<boolean>('mobile')
-const { value: code, errorMessage: codeMessage } = useField<boolean>('code')
+const { value: mobile, errorMessage: mobileMessage, validate: mobileValidate } = useField<string>('mobile')
+const { value: code, errorMessage: codeMessage } = useField<string>('code')
 
 watch(active, () => {
-  resetForm()
+   resetForm()
 })
 
 
@@ -107,15 +150,15 @@ watch(active, () => {
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-user"></i>
-            <input v-model="mobile" type="text" placeholder="请输入手机号" />
+            <input ref="mobileRef" v-model="mobile" type="text" placeholder="请输入手机号" />
           </div>
           <div v-if="mobileMessage" class="error"><i class="iconfont icon-warning" />{{ mobileMessage }}</div>
         </div>
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-code"></i>
-            <input v-model="code" type="text" placeholder="请输入验证码" />
-            <span class="code">发送验证码</span>
+            <input ref="codeRef" v-model="code" type="text" placeholder="请输入验证码" />
+            <span  class="code" @click="send">{{time ===0 ? '发送验证码': `${time}s后发送`}}</span>
           </div>
           <div v-if="codeMessage" class="error"><i class="iconfont icon-warning" />{{ codeMessage }}</div>
         </div>
