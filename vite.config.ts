@@ -22,5 +22,11 @@ export default defineConfig({
         `
       }
     }
+  },
+  server: {
+    host: 'www.corho.com',
+    port: 8080,
+    open: true,
+    cors: true
   }
 })
