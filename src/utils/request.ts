@@ -28,7 +28,12 @@ instance.interceptors.response.use(
   function (error: AxiosError<{message: string, code: string}>) {
     // 对响应错误做点什么
     if(error.response) {
-        Message.error(error.response.data.message)
+      const { code, message } = error.response.data
+      if(code === '501' && message === '三方登录失败') {
+        Message.success('QQ登录成功, 请您绑定账号!')
+      } else {
+        Message.error(message)
+      }
     } else {
       Message.error('网络错误, 请重试')
     }

@@ -34,6 +34,11 @@ export default defineStore('user', {
     logout() {
       this.profile = {} as Profile
       removeProfile()
+    },
+    async qqLogin(data: {unionId: string, source: number}) {
+      const res = await request.post('/login/social', data)
+      this.profile = res.data.result
+      setProfile(res.data.result)
     }
   }
 })

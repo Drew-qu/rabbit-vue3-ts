@@ -2,9 +2,37 @@
 import LoginHeader from './components/login-header.vue'
 import LoginFooter from './components/login-footer.vue'
 import { ref } from 'vue'
-import CallbackBind from './components/callback-bind.vue'
+import CallbackBind from '@/views/login/components/callback-bind.vue'
 import CallbackPatch from './components/callback-patch.vue'
+import useStore from '@/store'
+import { Message } from '@/components/message'
+import { useRouter } from 'vue-router'
 const hasAccount = ref(true)
+const { user } = useStore()
+const router = useRouter()
+
+
+// QC.Login.signOut()            // 登出
+// QC.Login.check()              // 检查是否已经登录
+// console.log(QC.Login.check());   // 已登录为 true, 为登录为 false
+
+// // 获取用户 qq 信息
+// QC.Login.getMe((openId) => {
+//   console.log(openId);
+// })
+
+const isLogin = QC.Login.check()
+
+if(isLogin) {
+  QC.Login.getMe(async (openId) => {
+    await user.qqLogin({
+      unionId: openId,
+      source: 6
+    })
+    Message.success('QQ登录成功')
+    router.push('/')
+  })
+}
 </script>
 
 <template>
